@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer Road Trip 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- ================= HEADER ================= -->
+    <header>
+        <nav class="navbar">
+            <h1 class="logo">🚗 Summer Road Trip</h1>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#trip">Trip</a></li>
+                <li><a href="#destinations">Destinations</a></li>
+                <li><a href="#journal">Journal</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button id="loginButton" class="btn-secondary" aria-label="Sign in">Sign in</button>
+                <button class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+                <button class="burger" aria-label="Open navigation">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ================= HERO ================= -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="subtitle">SUMMER 2026</p>
+            <h1>European Family Road Trip</h1>
+            <p class="description">A 17-day adventure across the heart of Europe, from the fairy-tale castles of Germany to the Adriatic coast of Croatia.</p>
+            <div class="hero-buttons">
+                <a href="#trip" class="btn-primary">View Itinerary</a>
+                <a href="#destinations" class="btn-secondary">Destinations</a>
+                <a href="#journal" class="btn-secondary">Journal</a>
+                <a href="#gallery" class="btn-secondary">Gallery</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="trip-dashboard section-animate">
+        <div class="dashboard-grid">
+            <article class="dashboard-card countdown-card">
+                <span class="card-label">Departure countdown</span>
+                <h3 id="departureCountdown">Loading...</h3>
+                <p>Trip starts on July 30, 2026.</p>
+            </article>
+            <article class="dashboard-card weather-card">
+                <span class="card-label">Weather update</span>
+                <div id="weatherSummary" class="weather-summary">Loading weather...</div>
+                <button type="button" id="refreshWeather" class="btn-secondary small">Refresh</button>
+            </article>
+            <article class="dashboard-card progress-card">
+                <span class="card-label">Trip progress</span>
+                <div class="progress-bar"><div id="tripProgressFill"></div></div>
+                <p id="tripProgressLabel">Preparing route progress...</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="trip-stats compact">
+        <div class="stat">
+            <div class="stat-label">Days</div>
+            <div class="stat-value"><h2 data-target="17">0</h2></div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Countries</div>
+            <div class="stat-value"><h2 data-target="8">0</h2></div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Destinations</div>
+            <div class="stat-value"><h2 data-target="12">0</h2></div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Kilometres</div>
+            <div class="stat-value"><h2 data-target="3000">0</h2></div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Journal</div>
+            <div class="stat-value"><h2 data-target="0" id="entryCount">0</h2></div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Photos</div>
+            <div class="stat-value"><h2 data-target="0" id="photoCount">0</h2></div>
+        </div>
+    </section>
+
+    <!-- ================= TRIP ================= -->
+    <section id="trip" class="section-animate">
+        <h2>Our Adventure</h2>
+        <p class="section-text">From start to finish, this route captures the family highlights and memorable stops.</p>
+        <div class="trip-visuals">
+            <article class="map-card">
+                <h3>Route map</h3>
+                <div class="map-frame">
+                    <div id="routeMap"></div>
+                </div>
+            </article>
+            <article class="timeline-card">
+                <h3>Road trip timeline</h3>
+                <div class="timeline">
+                    <div class="timeline-item" data-destination-id="dest-1"><strong>Day 1-2</strong><span>Neuschwanstein & Alps launch</span></div>
+                    <div class="timeline-item" data-destination-id="dest-2"><strong>Day 3-4</strong><span>Salzburg classical charm</span></div>
+                    <div class="timeline-item" data-destination-id="dest-4"><strong>Day 5-8</strong><span>Lake Bled to Dalmatian coast</span></div>
+                    <div class="timeline-item" data-destination-id="dest-6"><strong>Day 9-14</strong><span>Coastal islands & sunset views</span></div>
+                    <div class="timeline-item" data-destination-id="dest-12"><strong>Day 15-17</strong><span>Final Italian food & mountains</span></div>
+                </div>
+            </article>
+        </div>
+        <div class="itinerary-grid">
+            <article class="itinerary-card"><span class="day-badge">Day 1-2</span><h3>Lyon → Neuschwanstein</h3><p>Castles, Alpine lakes, and the very first family hike.</p><span class="route">Bavaria, Germany • 210 km</span></article>
+            <article class="itinerary-card"><span class="day-badge">Day 3-4</span><h3>Salzburg & Hallstatt</h3><p>Classical music, lakeside views, and historic salt mine tours.</p><span class="route">Austria • 180 km</span></article>
+            <article class="itinerary-card"><span class="day-badge">Day 5-8</span><h3>Bled to Split</h3><p>Mountain scenery gives way to coastal roads and fresh seafood.</p><span class="route">Slovenia to Croatia • 430 km</span></article>
+            <article class="itinerary-card"><span class="day-badge">Day 9-14</span><h3>Dalmatian Coast</h3><p>Island hopping, medieval towns, and Adriatic sunsets.</p><span class="route">Croatia • ferry + road travel</span></article>
+            <article class="itinerary-card"><span class="day-badge">Day 15-17</span><h3>Dubrovnik → Bologna → Torino</h3><p>Final Italian stops with food, culture, and alpine scenery.</p><span class="route">Croatia to Italy • 950 km</span></article>
+        </div>
+    </section>
+
+    <!-- ================= DESTINATIONS ================= -->
+    <section id="destinations" class="section-animate">
+        <h2>Our Journey</h2>
+        <p class="section-text">Follow our adventure across Europe, one destination at a time.</p>
+        <div class="card-container">
+            <article class="destination-card" data-destination-id="dest-1">
+                <img src="images/neuschwanstein.jpg" alt="Neuschwanstein Castle">
+                <div class="card-content">
+                    <span class="country">🇩🇪 Germany</span>
+                    <h3>Neuschwanstein</h3>
+                    <h4 class="highlight">★ Fairytale Castle</h4>
+                    <p>Our first major stop. We'll discover the famous fairytale castle hidden in the Bavarian Alps.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 1-2</span><span>🚗 7 h drive</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-1">Explore →</a>
+                </div>
+            </article>
+            <article class="destination-card" data-destination-id="dest-2">
+                <img src="images/salzburg.jpg" alt="Salzburg">
+                <div class="card-content">
+                    <span class="country">🇦🇹 Austria</span>
+                    <h3>Salzburg</h3>
+                    <h4 class="highlight">★ Fortress Hohensalzburg</h4>
+                    <p>Wander through Salzburg's charming old town, visit Mozart's birthplace, and enjoy breathtaking fortress views.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 3-4</span><span>🚗 3 h drive</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-2">Explore →</a>
+                </div>
+            </article>
+            <article class="destination-card" data-destination-id="dest-3">
+                <img src="images/Hallstatt.jpg" alt="Hallstatt">
+                <div class="card-content">
+                    <span class="country">🇦🇹 Austria</span>
+                    <h3>Hallstatt</h3>
+                    <h4 class="highlight">★ Salzwelten Hallstatt</h4>
+                    <p>Admire the crystal lake and alpine views, then explore historic salt mine traditions.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 5</span><span>🚗 2.5 h drive</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-3">Explore →</a>
+                </div>
+            </article>
+            <article class="destination-card" data-destination-id="dest-4">
+                <img src="images/Bled.jpg" alt="Lake Bled">
+                <div class="card-content">
+                    <span class="country">🇸🇮 Slovenia</span>
+                    <h3>Bled</h3>
+                    <h4 class="highlight">★ Lake Bled</h4>
+                    <p>Enjoy crystal-clear waters, visit the island church, and take in spectacular views from Bled Castle.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 6</span><span>🚗 2.5 h drive</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-4">Explore →</a>
+                </div>
+            </article>
+            <article class="destination-card" data-destination-id="dest-5">
+                <img src="images/Plitvice.jpg" alt="Plitvice Lakes">
+                <div class="card-content">
+                    <span class="country">🇭🇷 Croatia</span>
+                    <h3>Plitvice</h3>
+                    <h4 class="highlight">★ Waterfall Trails</h4>
+                    <p>Follow wooden paths through turquoise lakes and cascading waterfalls in the national park.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 7</span><span>🚗 3.5 h drive</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-5">Explore →</a>
+                </div>
+            </article>
+            <article class="destination-card" data-destination-id="dest-6">
+                <img src="images/Split.jpg" alt="Split">
+                <div class="card-content">
+                    <span class="country">🇭🇷 Croatia</span>
+                    <h3>Split</h3>
+                    <h4 class="highlight">★ Coastal City</h4>
+                    <p>Stroll Diocletian's Palace, eat fresh seafood, and watch the harbor light up at night.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 8-9</span><span>🚗 2.5 h drive</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-6">Explore →</a>
+                </div>
+            </article>
+            <article class="destination-card" data-destination-id="dest-7">
+                <img src="images/Korcula.jpg" alt="Korcula">
+                <div class="card-content">
+                    <span class="country">🇭🇷 Croatia</span>
+                    <h3>Korcula</h3>
+                    <h4 class="highlight">★ Island Escape</h4>
+                    <p>Relax in narrow alleys, taste local olive oil, and enjoy a slower pace on the island.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 10</span><span>🚢 Ferry day</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-7">Explore →</a>
+                </div>
+            </article>
+            <article class="destination-card" data-destination-id="dest-8">
+                <img src="images/mljet.jpg" alt="Mljet">
+                <div class="card-content">
+                    <span class="country">🇭🇷 Croatia</span>
+                    <h3>Mljet</h3>
+                    <h4 class="highlight">★ National Park</h4>
+                    <p>Hike pine forests and swim in the natural salt lakes of this peaceful island.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 11</span><span>🚢 Island ferry</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-8">Explore →</a>
+                </div>
+            </article>
+            <article class="destination-card" data-destination-id="dest-9">
+                <img src="images/Dubrovnik.jpg" alt="Dubrovnik">
+                <div class="card-content">
+                    <span class="country">🇭🇷 Croatia</span>
+                    <h3>Dubrovnik</h3>
+                    <h4 class="highlight">★ Historic Walls</h4>
+                    <p>Walk the ancient city walls and discover dramatic views over the Adriatic Sea.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 12-14</span><span>🚗 Coastal drive</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-9">Explore →</a>
+                </div>
+            </article>
+            <article class="destination-card" data-destination-id="dest-10">
+                <img src="images/Ferry.webp" alt="Ferry">
+                <div class="card-content">
+                    <span class="country">🇭🇷 Croatia</span>
+                    <h3>Ferry</h3>
+                    <h4 class="highlight">★ Sea Passage</h4>
+                    <p>Cross to the Italian coast with panoramic ocean views and open-air decks.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 15</span><span>🚢 5 h ferry</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-10">Explore →</a>
+                </div>
+            </article>
+            <article class="destination-card" data-destination-id="dest-11">
+                <img src="images/Bologna.jpg" alt="Bologna">
+                <div class="card-content">
+                    <span class="country">🇮🇹 Italy</span>
+                    <h3>Bologna</h3>
+                    <h4 class="highlight">★ Food Capital</h4>
+                    <p>Enjoy authentic pasta, stroll porticoed streets, and savor Italy’s culinary heart.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 16</span><span>🚗 3 h drive</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-11">Explore →</a>
+                </div>
+            </article>
+            <article class="destination-card" data-destination-id="dest-12">
+                <img src="images/Torino.jpg" alt="Torino">
+                <div class="card-content">
+                    <span class="country">🇮🇹 Italy</span>
+                    <h3>Torino</h3>
+                    <h4 class="highlight">★ Alpine Return</h4>
+                    <p>Finish the trip with city views, chocolate treats, and the final alpine drive.</p>
+                    <hr>
+                    <div class="trip-info"><span>📅 Day 17</span><span>🚗 Final leg</span></div>
+                    <a href="#" class="explore-btn" data-destination-id="dest-12">Explore →</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- ================= JOURNAL ================= -->
+    <section id="journal" class="section-animate">
+        <h2>Travel Journal</h2>
+        <p class="section-text">Fill in your daily travel report and create an identity card for today's adventure.</p>
+        <div class="journal-panel">
+            <div class="journal-card-preview">
+                <div class="journal-card-header">Daily Travel Report</div>
+                <div class="journal-card-row"><span>Date</span><strong id="preview-day">Day 1</strong></div>
+                <div class="journal-card-row"><span>Location</span><strong id="preview-location">Bavaria</strong></div>
+                <div class="journal-card-row"><span>Mood</span><strong id="preview-mood">Excited</strong></div>
+                <div class="journal-card-row"><span>Highlight</span><strong id="preview-highlight">Castle sunset</strong></div>
+                <div class="journal-card-row"><span>Weather</span><strong id="preview-weather">Sunny</strong></div>
+                <div class="journal-card-note"><span>Memory</span><p id="preview-note">The first view of the castle felt like stepping into a storybook.</p></div>
+            </div>
+            <form class="journal-form" id="journalForm">
+                <label for="entryDay">Day</label>
+                <input type="text" id="entryDay" name="entryDay" placeholder="Day 1" value="Day 1" required>
+                <label for="entryLocation">Location</label>
+                <input type="text" id="entryLocation" name="entryLocation" placeholder="Bavaria" value="Bavaria" required>
+                <label for="entryMood">Mood</label>
+                <select id="entryMood" name="entryMood">
+                    <option>Excited</option>
+                    <option>Happy</option>
+                    <option>Inspired</option>
+                    <option>Curious</option>
+                    <option>Tired</option>
+                </select>
+                <label for="entryHighlight">Highlight</label>
+                <input type="text" id="entryHighlight" name="entryHighlight" placeholder="Castle sunset" value="Castle sunset" required>
+                <label for="entryWeather">Weather</label>
+                <input type="text" id="entryWeather" name="entryWeather" placeholder="Sunny" value="Sunny">
+                <label for="entryDestination">Link to destination</label>
+                <select id="entryDestination" name="entryDestination">
+                    <option value="">No destination</option>
+                    <option value="dest-1">Neuschwanstein</option>
+                    <option value="dest-2">Salzburg</option>
+                    <option value="dest-3">Hallstatt</option>
+                    <option value="dest-4">Bled</option>
+                    <option value="dest-5">Plitvice</option>
+                    <option value="dest-6">Split</option>
+                    <option value="dest-7">Korcula</option>
+                    <option value="dest-8">Mljet</option>
+                    <option value="dest-9">Dubrovnik</option>
+                    <option value="dest-10">Ferry</option>
+                    <option value="dest-11">Bologna</option>
+                    <option value="dest-12">Torino</option>
+                </select>
+                <label for="entryNote">Best memory</label>
+                <textarea id="entryNote" name="entryNote" rows="4" placeholder="Describe today's best moment." required>The first view of the castle felt like stepping into a storybook.</textarea>
+                <button type="button" id="saveJournalButton" class="btn-primary">Save Report</button>
+            </form>
+            <div class="journal-grid" id="journalGrid"></div>
+        </div>
+    </section>
+
+    <!-- ================= GALLERY ================= -->
+    <section id="gallery" class="section-animate">
+        <h2>Gallery</h2>
+        <p class="section-text">Snapshots from the road, the scenery, and the moments that made the trip unforgettable. Upload your own travel photos to preserve personal memories.</p>
+        <div class="gallery-upload">
+            <button type="button" id="uploadButton" class="btn-secondary upload-button">Upload photos</button>
+            <input type="file" id="photoUpload" accept="image/*" multiple style="display:none;">
+            <p class="upload-note">Select one or more images from your device to add them to the gallery.</p>
+        </div>
+        <div class="gallery-grid" id="galleryGrid">
+            <div class="gallery-placeholder">
+                <div class="placeholder-illustration">
+                    <div class="camera-body"></div>
+                    <div class="camera-lens"></div>
+                    <div class="flash"></div>
+                </div>
+                <p>No photos yet. Tap upload to add your first travel memory.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="gallery-modal hidden" id="galleryModal">
+        <div class="modal-content">
+            <button class="close-modal" aria-label="Close gallery">×</button>
+            <img id="modalImage" alt="Gallery preview">
+            <p id="modalCaption"></p>
+            <div class="modal-details">
+                <label for="photoName">Photo name</label>
+                <input type="text" id="photoName" placeholder="Enter a title for the photo">
+                <label for="photoDescription">Photo description</label>
+                <textarea id="photoDescription" rows="4" placeholder="Add a memory or note about this photo..."></textarea>
+                <div class="modal-actions">
+                    <button type="button" id="saveDescriptionButton" class="btn-primary">Save</button>
+                    <button type="button" id="deletePhotoButton" class="btn-secondary">Delete photo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <p>Summer Road Trip 2026 • Made for the family adventure.</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
